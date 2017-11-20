@@ -5,9 +5,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by kcox40 on 11/20/2017.
+ * Test Created by Katie Cox. Tests checkZip of AddNewRatReportActivity
  */
 public class RatReportEntryVerifyTest {
+    /**
+     * Test that checks if entered text is a valid zip
+     * @throws Exception an exception if error occurs
+     */
     @Test
     public void checkZip() throws Exception {
         assertEquals(RatReportEntryVerify.checkZip(""), "Zip field is empty");

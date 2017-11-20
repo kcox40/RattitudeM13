@@ -51,11 +51,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         GoogleMap mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         Intent intent = getIntent();
         List<RatReport> reports = WelcomePageActivity.dbManager
                 .getDateRange(intent.getStringExtra("dateOne"),
@@ -76,8 +71,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         }
         if (reports.size() > 1) {
             LatLngBounds bounds = builder.build();
-            int padding = 50;
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            final int PADDING = 50;
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, PADDING);
             mMap.animateCamera(cu);
         }
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());

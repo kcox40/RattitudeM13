@@ -295,9 +295,6 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
     * @param view is the view class used display creating new rat report
     */
     public void createRatReport (View view) {
-        //RatReport(String date, String locationType,
-        //int incidentZip, String address, String city,
-        //        String borough, Double latitude, Double longitude)
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a", Locale.US);
         String date = df.format(myCalendar.getTime());
         String locationType = locationSpinner.getSelectedItem().toString();
@@ -323,26 +320,14 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
                     "Address Field Empty", Toast.LENGTH_LONG).show();
             return;
         }
-        if (!"".equals(cityView.getText().toString())) {
-            city = cityView.getText().toString();
-            int i = 0;
-            boolean containsDigits = false;
-            while ((i < city.length()) && !containsDigits) {
-                if (Character.isDigit(city.charAt(i))) {
-                    containsDigits = true;
-                }
-                i++;
-            }
-            if (containsDigits) {
-                Toast.makeText(getApplicationContext(),
-                        "City Must Not Contain Digits", Toast.LENGTH_LONG).show();
-                return;
-            }
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "City Field Empty", Toast.LENGTH_LONG).show();
+
+        city = cityView.getText().toString();
+        String verifyCity = RatReportEntryVerify.checkCity(city);
+        if (!city.equals(verifyCity)) {
+            Toast.makeText(getApplicationContext(), verifyCity, Toast.LENGTH_LONG).show();
             return;
         }
+
         if (!"".equals(latitude.getText().toString())) {
             latitudeDouble = Double.parseDouble(latitude.getText().toString());
         } else {

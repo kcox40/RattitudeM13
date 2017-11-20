@@ -33,44 +33,17 @@ public class RatChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rat_chart);
         Intent intent = getIntent();
-
         String startDateString = intent.getStringExtra("dateOne");
-        String[] startDateParts = startDateString.split("/");
-        int startMonthInt = Integer.parseInt(startDateParts[0]);
-
         String endDateString = intent.getStringExtra("dateTwo");
-        String[] endDateParts = endDateString.split("/");
-        int endMonthInt = Integer.parseInt(endDateParts[0]);
+        getMonthRange(startDateString, endDateString);
+        Map<Integer, Integer> months = populateChart(startDateString, endDateString);
 
-        for (int i = startMonthInt; i < (endMonthInt + 1); i++) {
-            monthRange.add(i - 1);
-        }
-
-        List<RatReport> reports = WelcomePageActivity.dbManager
-                .getDateRange(startDateString, endDateString);
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a", Locale.US);
-        //int[] monthCount = new int[stopMonth - startMonth + 1];
-        Map<Integer, Integer> months = new HashMap<>();
-
-        for (RatReport r : reports) {
-            String date = r.getDate();
-            String[] dateParts = date.split("/");
-            int month = Integer.parseInt(dateParts[0]);
-            Integer oldCount = months.get(month);
-            if ( oldCount == null ) {
-                oldCount = 0;
-            }
-            months.put(month, oldCount + 1);
-        }
 
         LineChart lineChart = findViewById(R.id.chart);
 
-        //List<Entry> entries = convertDataSetToEntry(data.getDataList());
         List<Entry> entries = convertDataSetToEntry(months);
 
         LineDataSet dataSet = new LineDataSet(entries, "# of Rat Reports");
-
-        //Log.d("APP", "Made dataSet with : " + entries.size());
 
         LineData data = new LineData(dataSet);
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS); //
@@ -114,5 +87,36 @@ public class RatChartActivity extends AppCompatActivity {
         finish();
     }
 
+    private void getMonthRange(String start, String end) {
 
+        String[] startDateParts = start.split("/");
+        int startMonthInt = Integer.parseInt(startDateParts[0]);
+
+
+        String[] endDateParts = end.split("/");
+        int endMonthInt = Integer.parseInt(endDateParts[0]);
+
+        for (int i = startMonthInt; i < (endMonthInt + 1); i++) {
+            monthRange.add(i - 1);
+        }
+    }
+
+    private Map<Integer,Integer> populateChart(String start, String end) {
+        List<RatReport> reports = WelcomePageActivity.dbManager
+                .getDateRange(start, end);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a", Locale.US);
+        Map<Integer, Integer> months = new HashMap<>();
+
+        for (RatReport r : reports) {
+            String date = r.getDate();
+            String[] dateParts = date.split("/");
+            int month = Integer.parseInt(dateParts[0]);
+            Integer oldCount = months.get(month);
+            if ( oldCount == null ) {
+                oldCount = 0;
+            }
+            months.put(month, oldCount + 1);
+        }
+        return months;
+    }
 }
