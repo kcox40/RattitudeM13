@@ -27,12 +27,12 @@ import java.util.Map;
  */
 
 public class RatReportManager {
-    private static List<RatReport> ratReports;
-    private static DatabaseReference ratDBRef;
-    private static Query ratQuery;
-    private static Query lastItem;
+    private final List<RatReport> ratReports;
+    private final DatabaseReference ratDBRef;
+    private final Query ratQuery;
+    private final Query lastItem;
     private int lastIndex;
-    private static RatReport lastReport;
+    private RatReport lastReport;
 
     /**
      * manages the rat report data base

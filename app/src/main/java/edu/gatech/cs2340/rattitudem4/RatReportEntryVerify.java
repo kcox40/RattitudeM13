@@ -1,10 +1,13 @@
 package edu.gatech.cs2340.rattitudem4;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * used to check if data entered in the AddNewRatActivity is valid
  */
 class RatReportEntryVerify {
-
+    private static final int TOOLONG = 36;
     /**
      * Checks if the Zip is valid
      * @param zip user entered Zip
@@ -35,9 +38,19 @@ class RatReportEntryVerify {
     }
 
     public static String checkCity(String city) {
+        Pattern p = Pattern.compile("[^A-Za-z0-9]");
+        Matcher m = p.matcher(city);
         if (!"".equals(city)) {
             int i = 0;
             boolean containsDigits = false;
+            if (city.length() <= 2) {
+                return "City Must Be Longer Than 2 Characters";
+            } else if(city.length() >= TOOLONG) {
+                return "City Must Not Be Longer Than 35 Characters";
+            }
+            if (m.find()) {
+                return "Cities Must Not Contain Special Characters";
+            }
             while ((i < city.length()) && !containsDigits) {
                 if (Character.isDigit(city.charAt(i))) {
                     containsDigits = true;

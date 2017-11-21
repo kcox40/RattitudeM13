@@ -35,6 +35,20 @@ public class RatReportDetail extends AppCompatActivity {
                 selectedRatReport = r;
             }
         }
+        setFeilds();
+
+
+    }
+
+    /**
+     * Closes view to return back to OptionsActivity in the stack
+     * @param view the current view (RatReportDetail)
+     */
+    public void backBtn(View view) {
+        finish();
+    }
+
+    private void setFeilds() {
         TextView idView = findViewById(R.id.id);
         TextView dateView = findViewById(R.id.date);
         TextView locationView = findViewById(R.id.locationType);
@@ -63,13 +77,5 @@ public class RatReportDetail extends AppCompatActivity {
         latitudeView.setText(latitude);
         String longitude = "Longitude: " + Double.toString(selectedRatReport.getLongitude());
         longitudeView.setText(longitude);
-    }
-
-    /**
-     * Closes view to return back to OptionsActivity in the stack
-     * @param view the current view (RatReportDetail)
-     */
-    public void backBtn(View view) {
-        finish();
     }
 }

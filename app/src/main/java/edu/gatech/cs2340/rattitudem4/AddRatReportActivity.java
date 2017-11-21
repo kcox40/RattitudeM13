@@ -50,10 +50,9 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
     private DatePickerDialog.OnDateSetListener datePick;
     private TimePickerDialog.OnTimeSetListener timePick;
     private LocationManager lm;
-    //Location location;
-    //double longitudeNum;
-    //double latitudeNum;
     private String provider;
+    private double latitudeDouble;
+    private double longitudeDouble;
 
     private final int  UPDATE_MIN_TIME = 400;
 
@@ -252,11 +251,6 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
                         lm.requestLocationUpdates(provider, UPDATE_MIN_TIME, 1, this);
                     }
 
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
                 }
             }
 
@@ -302,8 +296,8 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
         String city;
         int incidentZip;
         String borough = boroughSpinner.getSelectedItem().toString();
-        Double latitudeDouble;
-        Double longitudeDouble;
+//        Double latitudeDouble;
+//        Double longitudeDouble;
         String zip = zipView.getText().toString();
         String verifyZip = RatReportEntryVerify.checkZip(zip);
         if (zip.equals(verifyZip)){
@@ -327,7 +321,15 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
             Toast.makeText(getApplicationContext(), verifyCity, Toast.LENGTH_LONG).show();
             return;
         }
+        checkLatLong ();
 
+
+        new RatReport(date, locationType, incidentZip,address, city, borough, latitudeDouble,
+                longitudeDouble);
+        finish();
+    }
+
+    private void checkLatLong () {
         if (!"".equals(latitude.getText().toString())) {
             latitudeDouble = Double.parseDouble(latitude.getText().toString());
         } else {
@@ -342,9 +344,5 @@ public class AddRatReportActivity extends AppCompatActivity implements LocationL
                     "Longitude Field Empty", Toast.LENGTH_LONG).show();
             return;
         }
-
-        new RatReport(date, locationType, incidentZip,address, city, borough, latitudeDouble,
-                longitudeDouble);
-        finish();
     }
 }
